@@ -2,6 +2,8 @@ package src;
 
 public class GameBoard {
 
+    private SubBoard[][] game_board;
+
     public enum SQUARE {
         PLAYER,
         COMPUTER,
@@ -24,7 +26,7 @@ public class GameBoard {
                 sub_board[1][0] == SQUARE.PLAYER && sub_board[1][0] == sub_board[1][1] && sub_board[1][0] == sub_board[1][2] ||
                 sub_board[2][0] == SQUARE.PLAYER && sub_board[2][0] == sub_board[2][1] && sub_board[2][0] == sub_board[2][2] ||
                 sub_board[0][0] == SQUARE.PLAYER && sub_board[0][0] == sub_board[1][0] && sub_board[0][0] == sub_board[2][0] ||
-                sub_board[0][1] == SQUARE.PLAYER && sub_board[0][1] == sub_board[1][1] && sub_board[0][1] == sub_board[1][2] ||
+                sub_board[0][1] == SQUARE.PLAYER && sub_board[0][1] == sub_board[1][1] && sub_board[0][1] == sub_board[2][1] ||
                 sub_board[0][2] == SQUARE.PLAYER && sub_board[0][2] == sub_board[1][2] && sub_board[0][2] == sub_board[2][2] ||
                 sub_board[0][0] == SQUARE.PLAYER && sub_board[0][0] == sub_board[1][1] && sub_board[0][0] == sub_board[2][2] ||
                 sub_board[2][0] == SQUARE.PLAYER && sub_board[2][0] == sub_board[1][1] && sub_board[2][0] == sub_board[0][2]) {
@@ -33,7 +35,7 @@ public class GameBoard {
                 sub_board[1][0] == SQUARE.COMPUTER && sub_board[1][0] == sub_board[1][1] && sub_board[1][0] == sub_board[1][2] ||
                 sub_board[2][0] == SQUARE.COMPUTER && sub_board[2][0] == sub_board[2][1] && sub_board[2][0] == sub_board[2][2] ||
                 sub_board[0][0] == SQUARE.COMPUTER && sub_board[0][0] == sub_board[1][0] && sub_board[0][0] == sub_board[2][0] ||
-                sub_board[0][1] == SQUARE.COMPUTER && sub_board[0][1] == sub_board[1][1] && sub_board[0][1] == sub_board[1][2] ||
+                sub_board[0][1] == SQUARE.COMPUTER && sub_board[0][1] == sub_board[1][1] && sub_board[0][1] == sub_board[2][1] ||
                 sub_board[0][2] == SQUARE.COMPUTER && sub_board[0][2] == sub_board[1][2] && sub_board[0][2] == sub_board[2][2] ||
                 sub_board[0][0] == SQUARE.COMPUTER && sub_board[0][0] == sub_board[1][1] && sub_board[0][0] == sub_board[2][2] ||
                 sub_board[2][0] == SQUARE.COMPUTER && sub_board[2][0] == sub_board[1][1] && sub_board[2][0] == sub_board[0][2]) {
@@ -43,8 +45,6 @@ public class GameBoard {
             }
         }
     }
-
-    private SubBoard[][] game_board;
 
     public GameBoard() {
         game_board = new SubBoard[3][3];
@@ -61,6 +61,10 @@ public class GameBoard {
         int boardY = (board - 1) % 3;
         int squareX = (square - 1) / 3;
         int squareY = (square - 1) % 3;
+
+        if (game_board[boardX][boardY].getWinner() != SQUARE.NONE) {
+            return false;
+        }
 
         if (game_board[boardX][boardY].sub_board[squareX][squareY] != SQUARE.NONE) {
             return false;
