@@ -12,6 +12,7 @@ public class Main {
         int turn = 1;
         while (true) {
             gb.drawSubBoards();
+            System.out.print("Input Move Here (q to quit): ");
             String move = input.nextLine();
             if (move.equals("q")) {
                 input.close();
@@ -21,8 +22,10 @@ public class Main {
             // format: "XYZ" where X is the board number (indexed from 1), Y is the square number (indexed from 1)
             int board = Character.getNumericValue(move.charAt(0));
             int square = Character.getNumericValue(move.charAt(1));
-            gb.makeMove(board, square, (turn % 2 == 1) ? SQUARE.PLAYER : SQUARE.COMPUTER);
-            turn++;
+            boolean move_result = gb.makeMove(board, square, (turn % 2 == 1) ? SQUARE.PLAYER : SQUARE.COMPUTER);
+            if (move_result) {
+                turn++;
+            }
         }
     }
 }

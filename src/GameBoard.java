@@ -20,7 +20,27 @@ public class GameBoard {
         }
 
         public SQUARE getWinner() {
-            return SQUARE.NONE;
+            if (sub_board[0][0] == SQUARE.PLAYER && sub_board[0][0] == sub_board[0][1] && sub_board[0][0] == sub_board[0][2] ||
+                sub_board[1][0] == SQUARE.PLAYER && sub_board[1][0] == sub_board[1][1] && sub_board[1][0] == sub_board[1][2] ||
+                sub_board[2][0] == SQUARE.PLAYER && sub_board[2][0] == sub_board[2][1] && sub_board[2][0] == sub_board[2][2] ||
+                sub_board[0][0] == SQUARE.PLAYER && sub_board[0][0] == sub_board[1][0] && sub_board[0][0] == sub_board[2][0] ||
+                sub_board[0][1] == SQUARE.PLAYER && sub_board[0][1] == sub_board[1][1] && sub_board[0][1] == sub_board[1][2] ||
+                sub_board[0][2] == SQUARE.PLAYER && sub_board[0][2] == sub_board[1][2] && sub_board[0][2] == sub_board[2][2] ||
+                sub_board[0][0] == SQUARE.PLAYER && sub_board[0][0] == sub_board[1][1] && sub_board[0][0] == sub_board[2][2] ||
+                sub_board[2][0] == SQUARE.PLAYER && sub_board[2][0] == sub_board[1][1] && sub_board[2][0] == sub_board[0][2]) {
+                return SQUARE.PLAYER;
+            } else if (sub_board[0][0] == SQUARE.COMPUTER && sub_board[0][0] == sub_board[0][1] && sub_board[0][0] == sub_board[0][2] ||
+                sub_board[1][0] == SQUARE.COMPUTER && sub_board[1][0] == sub_board[1][1] && sub_board[1][0] == sub_board[1][2] ||
+                sub_board[2][0] == SQUARE.COMPUTER && sub_board[2][0] == sub_board[2][1] && sub_board[2][0] == sub_board[2][2] ||
+                sub_board[0][0] == SQUARE.COMPUTER && sub_board[0][0] == sub_board[1][0] && sub_board[0][0] == sub_board[2][0] ||
+                sub_board[0][1] == SQUARE.COMPUTER && sub_board[0][1] == sub_board[1][1] && sub_board[0][1] == sub_board[1][2] ||
+                sub_board[0][2] == SQUARE.COMPUTER && sub_board[0][2] == sub_board[1][2] && sub_board[0][2] == sub_board[2][2] ||
+                sub_board[0][0] == SQUARE.COMPUTER && sub_board[0][0] == sub_board[1][1] && sub_board[0][0] == sub_board[2][2] ||
+                sub_board[2][0] == SQUARE.COMPUTER && sub_board[2][0] == sub_board[1][1] && sub_board[2][0] == sub_board[0][2]) {
+                return SQUARE.COMPUTER;
+            } else {
+                return SQUARE.NONE;
+            }
         }
     }
 
@@ -34,20 +54,6 @@ public class GameBoard {
             }
         }
     }
-
-    /**
-     * 
-     * 1 -> 0, 0
-     * 2 -> 0, 1
-     * 3 -> 0, 2
-     * 4 -> 1, 0
-     * 5 -> 1, 1
-     * 6 -> 1, 2
-     * 7 -> 2, 0
-     * 8 -> 2, 1
-     * 9 -> 2, 2
-     * 
-     */
 
     // board AND square are ints between 1 and 9
     public boolean makeMove(int board, int square, SQUARE token) {
@@ -63,29 +69,6 @@ public class GameBoard {
         game_board[boardX][boardY].sub_board[squareX][squareY] = token;
 
         return true;
-    }
-
-    public void setArtificialBoardState() {
-        game_board[0][0].sub_board[0][0] = SQUARE.PLAYER;
-        game_board[0][0].sub_board[0][2] = SQUARE.PLAYER;
-        game_board[0][0].sub_board[2][1] = SQUARE.PLAYER;
-        game_board[0][0].sub_board[1][0] = SQUARE.COMPUTER;
-        game_board[0][0].sub_board[1][1] = SQUARE.COMPUTER;
-        game_board[0][0].sub_board[1][2] = SQUARE.COMPUTER;
-
-        game_board[1][1].sub_board[0][0] = SQUARE.PLAYER;
-        game_board[1][1].sub_board[0][2] = SQUARE.PLAYER;
-        game_board[1][1].sub_board[2][1] = SQUARE.PLAYER;
-        game_board[1][1].sub_board[1][0] = SQUARE.COMPUTER;
-        game_board[1][1].sub_board[1][1] = SQUARE.COMPUTER;
-        game_board[1][1].sub_board[1][2] = SQUARE.COMPUTER;
-
-        game_board[2][2].sub_board[0][0] = SQUARE.PLAYER;
-        game_board[2][2].sub_board[0][2] = SQUARE.PLAYER;
-        game_board[2][2].sub_board[2][1] = SQUARE.PLAYER;
-        game_board[2][2].sub_board[1][0] = SQUARE.COMPUTER;
-        game_board[2][2].sub_board[1][1] = SQUARE.COMPUTER;
-        game_board[2][2].sub_board[1][2] = SQUARE.COMPUTER;
     }
 
     public void drawBoardLines() {
@@ -119,13 +102,13 @@ public class GameBoard {
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 3; col++) {
                 SQUARE winner = game_board[row][col].getWinner();
+                double topLeftX = 0.333 * col;
+                double topLeftY = 1 - 0.333 * row;
+
                 if (winner == SQUARE.NONE) {
                     // Draw the gridlines for the subboard
                     StdDraw.setPenRadius(0.01);
                     StdDraw.setPenColor(StdDraw.GRAY);
-
-                    double topLeftX = 0.333 * col;
-                    double topLeftY = 1 - 0.333 * row;
 
                     StdDraw.line(topLeftX + 0.111, topLeftY, topLeftX + 0.111, topLeftY - 0.333);
                     StdDraw.line(topLeftX + 0.222, topLeftY, topLeftX + 0.222, topLeftY - 0.333);
@@ -138,10 +121,6 @@ public class GameBoard {
                     for (int subRow = 0; subRow < 3; subRow++) {
                         for (int subCol = 0; subCol < 3; subCol++) {
                             SQUARE token = sb.sub_board[subRow][subCol];
-                            /*
-                             * 
-                             * 
-                             */
                             if (token == SQUARE.PLAYER) {
                                 StdDraw.setPenColor(StdDraw.BLUE);
                                 StdDraw.filledSquare(topLeftX + 0.0555 + (0.111 * subCol), topLeftY - 0.0555 - (0.111 * subRow), 0.03);
@@ -152,8 +131,12 @@ public class GameBoard {
                         }
                     }
 
-                } else { // Fill with the correct color
-
+                } else if (winner == SQUARE.PLAYER){ 
+                    StdDraw.setPenColor(StdDraw.BLUE);
+                    StdDraw.filledSquare(topLeftX + 0.1665, topLeftY - 0.1665, 0.1665);
+                } else {
+                    StdDraw.setPenColor(StdDraw.RED);
+                    StdDraw.filledSquare(topLeftX + 0.1665, topLeftY - 0.1665, 0.1665);
                 }
             }
         }
